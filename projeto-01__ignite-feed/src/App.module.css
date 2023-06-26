@@ -1,0 +1,24 @@
+html {
+  font-size: 87.5%;
+}
+
+.wrapper {
+  max-width: 70rem;
+  padding: 0 1rem;
+  margin: 2rem auto;
+
+  display: grid;
+  align-items: start;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 100%;
+  }
+
+  .wrapper {
+    grid-template-columns: 256px 1fr;
+  }
+}

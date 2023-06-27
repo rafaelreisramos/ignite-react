@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,6 +13,7 @@ import {
   StartCountdownButton,
   TaskInput,
 } from './styles'
+import { differenceInSeconds } from 'date-fns'
 
 const newCicleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
@@ -23,7 +25,18 @@ const newCicleFormValidationSchema = zod.object({
 
 type NewCycleFormData = zod.infer<typeof newCicleFormValidationSchema>
 
+interface Cycle {
+  id: string
+  task: string
+  amountInMinutes: number
+  startDate: Date
+}
+
 export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [elapsedTimeInSeconds, setElapsedTimeInSeconds] = useState(0)
+
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCicleFormValidationSchema),
     defaultValues: {
@@ -32,10 +45,44 @@ export function Home() {
     },
   })
 
-  function handleCreateNewCicle(data: any) {
-    console.log(data)
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  useEffect(() => {
+    if (activeCycle) {
+      setInterval(() => {
+        setElapsedTimeInSeconds(
+          differenceInSeconds(new Date(), activeCycle.startDate)
+        )
+      }, 1000)
+    }
+  }, [activeCycle])
+
+  function handleCreateNewCicle(data: NewCycleFormData) {
+    const id = String(new Date().getTime())
+
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      amountInMinutes: data.amountInMinutes,
+      startDate: new Date(),
+    }
+
+    setCycles((state) => [...state, newCycle])
+    setActiveCycleId(id)
+
     reset()
   }
+
+  const totalTimeInSeconds = activeCycle ? activeCycle.amountInMinutes * 60 : 0
+  const totalRemainingTimeInSeconds = activeCycle
+    ? totalTimeInSeconds - elapsedTimeInSeconds
+    : 0
+
+  const remainingMinutes = Math.floor(totalRemainingTimeInSeconds / 60)
+  const remainingSeconds = totalRemainingTimeInSeconds % 60
+
+  const countdownMinutes = String(remainingMinutes).padStart(2, '0')
+  const countdownSeconds = String(remainingSeconds).padStart(2, '0')
 
   const task = watch('task')
   const isSubmitDisabled = !task
@@ -72,11 +119,11 @@ export function Home() {
         </FormContainer>
 
         <CountdownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{countdownMinutes[0]}</span>
+          <span>{countdownMinutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{countdownSeconds[0]}</span>
+          <span>{countdownSeconds[1]}</span>
         </CountdownContainer>
 
         <StartCountdownButton disabled={isSubmitDisabled} type="submit">

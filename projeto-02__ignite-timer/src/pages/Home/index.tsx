@@ -48,14 +48,39 @@ export function Home() {
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   useEffect(() => {
+    let intervalId: number
     if (activeCycle) {
-      setInterval(() => {
+      intervalId = setInterval(() => {
         setElapsedTimeInSeconds(
           differenceInSeconds(new Date(), activeCycle.startDate)
         )
       }, 1000)
     }
+
+    return () => {
+      clearInterval(intervalId)
+    }
   }, [activeCycle])
+
+  const totalTimeInSeconds = activeCycle ? activeCycle.amountInMinutes * 60 : 0
+  const totalRemainingTimeInSeconds = activeCycle
+    ? totalTimeInSeconds - elapsedTimeInSeconds
+    : 0
+
+  const remainingMinutes = Math.floor(totalRemainingTimeInSeconds / 60)
+  const remainingSeconds = totalRemainingTimeInSeconds % 60
+
+  const countdownMinutes = String(remainingMinutes).padStart(2, '0')
+  const countdownSeconds = String(remainingSeconds).padStart(2, '0')
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${countdownMinutes}:${countdownSeconds}`
+    }
+  }, [activeCycle, countdownMinutes, countdownSeconds])
+
+  const task = watch('task')
+  const isSubmitDisabled = !task
 
   function handleCreateNewCicle(data: NewCycleFormData) {
     const id = String(new Date().getTime())
@@ -69,23 +94,10 @@ export function Home() {
 
     setCycles((state) => [...state, newCycle])
     setActiveCycleId(id)
+    setElapsedTimeInSeconds(0)
 
     reset()
   }
-
-  const totalTimeInSeconds = activeCycle ? activeCycle.amountInMinutes * 60 : 0
-  const totalRemainingTimeInSeconds = activeCycle
-    ? totalTimeInSeconds - elapsedTimeInSeconds
-    : 0
-
-  const remainingMinutes = Math.floor(totalRemainingTimeInSeconds / 60)
-  const remainingSeconds = totalRemainingTimeInSeconds % 60
-
-  const countdownMinutes = String(remainingMinutes).padStart(2, '0')
-  const countdownSeconds = String(remainingSeconds).padStart(2, '0')
-
-  const task = watch('task')
-  const isSubmitDisabled = !task
 
   return (
     <HomeContainer>

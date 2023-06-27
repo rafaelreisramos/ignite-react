@@ -32,6 +32,7 @@ interface Cycle {
   amountInMinutes: number
   startDate: Date
   interruptedDate?: Date
+  finishedDate?: Date
 }
 
 export function Home() {
@@ -48,26 +49,42 @@ export function Home() {
   })
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+  const totalTimeInSeconds = activeCycle ? activeCycle.amountInMinutes * 60 : 0
+  const totalRemainingTimeInSeconds = activeCycle
+    ? totalTimeInSeconds - elapsedTimeInSeconds
+    : 0
 
   useEffect(() => {
     let intervalId: number
     if (activeCycle) {
       intervalId = setInterval(() => {
-        setElapsedTimeInSeconds(
-          differenceInSeconds(new Date(), activeCycle.startDate)
+        const secondsDifference = differenceInSeconds(
+          new Date(),
+          activeCycle.startDate
         )
+
+        if (secondsDifference >= totalTimeInSeconds) {
+          setCycles((state) =>
+            state.map((cycle) => {
+              if (cycle.id === activeCycleId) {
+                return { ...cycle, finishedDate: new Date() }
+              } else {
+                return cycle
+              }
+            })
+          )
+          clearInterval(intervalId)
+          setElapsedTimeInSeconds(totalTimeInSeconds)
+        } else {
+          setElapsedTimeInSeconds(secondsDifference)
+        }
       }, 1000)
     }
 
     return () => {
       clearInterval(intervalId)
     }
-  }, [activeCycle])
-
-  const totalTimeInSeconds = activeCycle ? activeCycle.amountInMinutes * 60 : 0
-  const totalRemainingTimeInSeconds = activeCycle
-    ? totalTimeInSeconds - elapsedTimeInSeconds
-    : 0
+  }, [activeCycle, activeCycleId, totalTimeInSeconds])
 
   const remainingMinutes = Math.floor(totalRemainingTimeInSeconds / 60)
   const remainingSeconds = totalRemainingTimeInSeconds % 60

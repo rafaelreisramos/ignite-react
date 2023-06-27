@@ -35,7 +35,9 @@ interface Cycle {
 interface CycleContextData {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
+  elapsedTimeInSeconds: number
   markActiveCycleAsFinished: () => void
+  setElapsedTime: (seconds: number) => void
 }
 
 export const CycleContext = createContext({} as CycleContextData)
@@ -43,7 +45,7 @@ export const CycleContext = createContext({} as CycleContextData)
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
-  // const [elapsedTimeInSeconds, setElapsedTimeInSeconds] = useState(0)
+  const [elapsedTimeInSeconds, setElapsedTimeInSeconds] = useState(0)
 
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCicleFormValidationSchema),
@@ -54,6 +56,10 @@ export function Home() {
   })
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  function setElapsedTime(seconds: number) {
+    setElapsedTimeInSeconds(seconds)
+  }
 
   function markActiveCycleAsFinished() {
     setCycles((state) =>
@@ -82,7 +88,7 @@ export function Home() {
 
     setCycles((state) => [...state, newCycle])
     setActiveCycleId(id)
-    // setElapsedTimeInSeconds(0)
+    setElapsedTimeInSeconds(0)
 
     reset()
   }
@@ -133,7 +139,13 @@ export function Home() {
         </FormContainer>
 
         <CycleContext.Provider
-          value={{ activeCycle, activeCycleId, markActiveCycleAsFinished }}
+          value={{
+            activeCycle,
+            activeCycleId,
+            elapsedTimeInSeconds,
+            setElapsedTime,
+            markActiveCycleAsFinished,
+          }}
         >
           <Countdown />
         </CycleContext.Provider>

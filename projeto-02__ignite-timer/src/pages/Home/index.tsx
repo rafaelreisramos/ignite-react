@@ -35,7 +35,7 @@ interface Cycle {
 interface CycleContextData {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
-  markCycleAsFinished: () => void
+  markActiveCycleAsFinished: () => void
 }
 
 export const CycleContext = createContext({} as CycleContextData)
@@ -55,7 +55,7 @@ export function Home() {
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
-  function markCycleAsFinished() {
+  function markActiveCycleAsFinished() {
     setCycles((state) =>
       state.map((cycle) => {
         if (cycle.id === activeCycleId) {
@@ -133,7 +133,7 @@ export function Home() {
         </FormContainer>
 
         <CycleContext.Provider
-          value={{ activeCycle, activeCycleId, markCycleAsFinished }}
+          value={{ activeCycle, activeCycleId, markActiveCycleAsFinished }}
         >
           <Countdown />
         </CycleContext.Provider>

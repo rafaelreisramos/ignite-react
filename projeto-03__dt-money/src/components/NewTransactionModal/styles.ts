@@ -56,7 +56,12 @@ export const Content = styled(Dialog.Content)`
     color: ${(props) => props.theme.white};
     font-weight: 700;
 
-    &:hover {
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
       background: ${(props) => props.theme['green-700']};
       transition: background-color 0.2s;
     }
@@ -79,7 +84,7 @@ export const TransactionTypeButtonContainer = styled(RadioGroup.Root)`
 `
 
 interface TransactionTypeButtonProps {
-  variant: 'income' | 'outcome'
+  $variant: 'income' | 'outcome'
 }
 
 export const TransactionTypeButton = styled(
@@ -100,7 +105,7 @@ export const TransactionTypeButton = styled(
 
   svg {
     color: ${(props) =>
-      props.variant === 'income'
+      props.$variant === 'income'
         ? props.theme['green-300']
         : props.theme['red-300']};
   }
@@ -113,7 +118,7 @@ export const TransactionTypeButton = styled(
   &[data-state='checked'] {
     color: ${(props) => props.theme.white};
     background: ${(props) =>
-      props.variant === 'income'
+      props.$variant === 'income'
         ? props.theme['green-500']
         : props.theme['red-500']};
 

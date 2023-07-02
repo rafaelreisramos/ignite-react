@@ -26,7 +26,7 @@ export function Summary() {
         <strong>{priceFormatter.format(summary.outcome)}</strong>
       </SummaryCard>
 
-      <SummaryCard variant="green">
+      <SummaryCard $variant="green">
         <header>
           <span>Entradas</span>
           <CurrencyDollar size={24} color="#ffffff" />

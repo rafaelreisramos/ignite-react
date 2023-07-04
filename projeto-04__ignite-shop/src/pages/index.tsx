@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { GetStaticProps } from 'next'
 import Stripe from 'stripe'
 import { stripe } from '../lib/stripe'
@@ -31,13 +32,20 @@ export default function Home({ products }: HomeProps) {
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map((product) => {
         return (
-          <ProductCard key={product.id} href="#" className="keen-slider__slide">
-            <Image src={product.imageUrl} width={520} height={480} alt="" />
-            <footer>
-              <strong>{product.name}</strong>
-              <span>{product.price}</span>
-            </footer>
-          </ProductCard>
+          <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            passHref
+            legacyBehavior
+          >
+            <ProductCard className="keen-slider__slide">
+              <Image src={product.imageUrl} width={520} height={480} alt="" />
+              <footer>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
+              </footer>
+            </ProductCard>
+          </Link>
         )
       })}
     </HomeContainer>

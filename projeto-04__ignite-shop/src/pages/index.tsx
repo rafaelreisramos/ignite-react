@@ -11,9 +11,8 @@ import { HomeContainer, ProductCard } from '../styles/pages/home'
 interface Product {
   id: string
   name: string
-  description: string
   imageUrl: string
-  price: number
+  price: string
 }
 
 interface HomeProps {
@@ -37,6 +36,7 @@ export default function Home({ products }: HomeProps) {
             href={`/product/${product.id}`}
             passHref
             legacyBehavior
+            prefetch={false}
           >
             <ProductCard className="keen-slider__slide">
               <Image src={product.imageUrl} width={520} height={480} alt="" />
@@ -63,7 +63,6 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       id: product.id,
       name: product.name,
-      description: product.description,
       imageUrl: product.images[0],
       price: new Intl.NumberFormat('pt-BR', {
         style: 'currency',

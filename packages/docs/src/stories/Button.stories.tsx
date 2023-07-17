@@ -8,6 +8,11 @@ const meta: Meta<ButtonProps> = {
   component: Button,
   tags: ['autodocs'],
   args: { children: 'Send' },
+  argTypes: {
+    onClick: {
+      action: 'click',
+    },
+  },
 } as Meta
 
 export default meta

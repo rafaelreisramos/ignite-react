@@ -8,8 +8,15 @@ const meta: Meta<HeadingProps> = {
   tags: ['autodocs'],
   args: {
     children: 'Custom title',
+    size: 'md',
   },
-} as Meta
+  argTypes: {
+    size: {
+      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'],
+      control: 'select',
+    },
+  },
+}
 
 export default meta
 

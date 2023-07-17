@@ -10,6 +10,13 @@ const meta: Meta<AvatarProps> = {
     src: 'https://github.com/rafaelreisramos.png',
     alt: 'Rafael Reis Ramos',
   },
+  argTypes: {
+    src: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
 } as Meta
 
 export default meta

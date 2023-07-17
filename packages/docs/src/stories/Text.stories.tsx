@@ -9,8 +9,29 @@ const meta: Meta<TextProps> = {
   args: {
     children:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, magni. Dolor laborum fugit labore aliquam. Fuga cumque quos, reprehenderit impedit sint voluptatum quis corporis deserunt, rerum culpa architecto provident nemo.',
+    size: 'md',
   },
-} as Meta
+  argTypes: {
+    size: {
+      options: [
+        'xxs',
+        'xs',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl',
+        '4xl',
+        '5xl',
+        '6xl',
+        '7xl',
+        '8xl',
+        '9xl',
+      ],
+      control: 'select',
+    },
+  },
+}
 
 export default meta
 

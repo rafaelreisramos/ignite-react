@@ -7,13 +7,34 @@ const meta: Meta<ButtonProps> = {
   title: 'Form/Button',
   component: Button,
   tags: ['autodocs'],
-  args: { children: 'Send' },
+  args: {
+    children: 'Send',
+    variant: 'primary',
+    size: 'md',
+    disabled: false,
+  },
   argTypes: {
+    children: {
+      control: {
+        type: null,
+      },
+    },
+    variant: {
+      options: ['primary', 'secondary', 'tertiary'],
+      control: 'inline-radio',
+    },
+    size: {
+      options: ['sm', 'md'],
+      control: 'inline-radio',
+    },
+    disabled: {
+      control: 'boolean',
+    },
     onClick: {
       action: 'click',
     },
   },
-} as Meta
+}
 
 export default meta
 
@@ -23,15 +44,15 @@ export const Primary: Story = {}
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
     children: 'Create New',
+    variant: 'secondary',
   },
 }
 
 export const Tertiary: Story = {
   args: {
-    variant: 'tertiary',
     children: 'Cancel',
+    variant: 'tertiary',
   },
 }
 

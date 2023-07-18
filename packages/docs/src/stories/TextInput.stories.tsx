@@ -6,6 +6,15 @@ const meta: Meta<TextInputProps> = {
   title: 'Form/Text Input',
   component: TextInput,
   tags: ['autodocs'],
+  args: {
+    variant: 'md',
+  },
+  argTypes: {
+    variant: {
+      options: ['sm', 'md'],
+      control: 'inline-radio',
+    },
+  },
   decorators: [
     (Story) => {
       return (
@@ -27,13 +36,14 @@ type Story = StoryObj<TextInputProps>
 
 export const Primary: Story = {
   args: {
-    placeholder: 'Type you email',
+    placeholder: 'Type you name',
   },
 }
 
 export const WithPrefix: Story = {
   args: {
     prefix: 'cal.com/',
+    placeholder: 'your-username',
   },
 }
 

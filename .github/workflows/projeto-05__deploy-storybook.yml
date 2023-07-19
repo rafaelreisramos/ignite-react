@@ -21,11 +21,11 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: ./projeto-05__design-system/packages/docs
+        working-directory: ./projeto-05__design-system
         run: npm ci
 
       - name: Build Storybook
-        working-directory: ./projeto-05__design-system/packages/docs
+        working-directory: ./projeto-05__design-system
         run: npm run build
 
       - name: Deploy Storybook

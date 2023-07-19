@@ -1,6 +1,7 @@
 name: Deploy Projeto 05 - Design System Docs
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'main'

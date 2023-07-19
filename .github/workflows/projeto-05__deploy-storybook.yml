@@ -8,16 +8,14 @@ on:
     paths:
       - 'projeto-05__design-system'
 
-defaults:
-  run:
-    working-directory: projeto-05__design-system
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          sparse-checkout: projeto-05__design-system
 
       - name: Setup Node.js
         uses: actions/setup-node@v3

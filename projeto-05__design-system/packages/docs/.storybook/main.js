@@ -14,5 +14,12 @@ const config = {
   docs: {
     autodocs: 'tag',
   },
+  viteFinal: (config, { configType }) => {
+    if (configType === 'PRODUCTION') {
+      config.base = '/ignite-react/'
+    }
+
+    return config
+  },
 }
 export default config

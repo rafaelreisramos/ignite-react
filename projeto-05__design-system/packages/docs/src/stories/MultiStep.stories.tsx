@@ -31,6 +31,12 @@ type Story = StoryObj<MultiStepProps>
 
 export const Primary: Story = {}
 
+export const Half: Story = {
+  args: {
+    currentStep: 2,
+  },
+}
+
 export const Full: Story = {
   args: {
     currentStep: 4,

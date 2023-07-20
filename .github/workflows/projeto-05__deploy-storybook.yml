@@ -29,6 +29,9 @@ jobs:
       - name: Build Storybook
         working-directory: ./projeto-05__design-system
         run: npm run build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
       - name: Deploy Storybook
         working-directory: ./projeto-05__design-system/packages/docs

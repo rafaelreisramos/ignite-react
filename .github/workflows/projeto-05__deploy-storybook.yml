@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'projeto-05__design-system'
+      - 'projeto-05__design-system/packages/docs/**'
 
 jobs:
   build-and-deploy:
